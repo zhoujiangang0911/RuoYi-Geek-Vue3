@@ -143,12 +143,13 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item label="内容">
-                     <el-input
+                     <!-- <el-input
                         :rows="6"
                         type="textarea"
                         placeholder="请输入内容"
                         v-model="form.noticeContent"
-                     />
+                     /> -->
+                     <Editor v-model="form.noticeContent" :min-height="192"></Editor>
                   </el-form-item>
                </el-col>
             </el-row>
@@ -165,6 +166,7 @@
 
 <script setup name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
+import Editor from "@/components/Editor";
 
 const { proxy } = getCurrentInstance();
 const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type");
