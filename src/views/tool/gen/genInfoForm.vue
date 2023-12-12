@@ -11,7 +11,15 @@
           </el-select>
         </el-form-item>
       </el-col>
-
+      <el-col :span="12">
+        <el-form-item prop="tplWebType">
+          <template #label>前端类型</template>
+          <el-select v-model="info.tplWebType">
+            <el-option label="Vue2 Element UI 模版" value="element-ui" />
+            <el-option label="Vue3 Element Plus 模版" value="element-plus" />
+          </el-select>
+        </el-form-item>
+      </el-col>
       <el-col :span="12">
         <el-form-item prop="packageName">
           <template #label>
@@ -61,6 +69,18 @@
       </el-col>
 
       <el-col :span="12">
+        <el-form-item prop="genType">
+          <span slot="label">
+            生成代码方式
+            <el-tooltip content="默认为zip压缩包下载，也可以自定义生成路径" placement="top">
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </span>
+          <el-radio v-model="info.genType" label="0">zip压缩包</el-radio>
+          <el-radio v-model="info.genType" label="1">自定义路径</el-radio>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
         <el-form-item>
           <template #label>
             上级菜单
@@ -68,25 +88,8 @@
               <el-icon><question-filled /></el-icon>
             </el-tooltip>
           </template>
-          <tree-select
-            v-model:value="info.parentMenuId"
-            :options="menuOptions"
-            :objMap="{ value: 'menuId', label: 'menuName', children: 'children' }"
-            placeholder="请选择系统菜单"
-          />
-        </el-form-item>
-      </el-col>
-
-      <el-col :span="12">
-        <el-form-item prop="genType">
-          <template #label>
-            生成代码方式
-            <el-tooltip content="默认为zip压缩包下载，也可以自定义生成路径" placement="top">
-              <el-icon><question-filled /></el-icon>
-            </el-tooltip>
-          </template>
-          <el-radio v-model="info.genType" label="0">zip压缩包</el-radio>
-          <el-radio v-model="info.genType" label="1">自定义路径</el-radio>
+          <tree-select v-model:value="info.parentMenuId" :options="menuOptions"
+            :objMap="{ value: 'menuId', label: 'menuName', children: 'children' }" placeholder="请选择系统菜单" />
         </el-form-item>
       </el-col>
 
@@ -116,7 +119,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <template v-if="info.tplCategory == 'tree'">
       <h4 class="form-header">其他信息</h4>
       <el-row v-show="info.tplCategory == 'tree'">
@@ -129,12 +132,8 @@
               </el-tooltip>
             </template>
             <el-select v-model="info.treeCode" placeholder="请选择">
-              <el-option
-                v-for="(column, index) in info.columns"
-                :key="index"
-                :label="column.columnName + '：' + column.columnComment"
-                :value="column.columnName"
-              ></el-option>
+              <el-option v-for="(column, index) in info.columns" :key="index"
+                :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -147,12 +146,8 @@
               </el-tooltip>
             </template>
             <el-select v-model="info.treeParentCode" placeholder="请选择">
-              <el-option
-                v-for="(column, index) in info.columns"
-                :key="index"
-                :label="column.columnName + '：' + column.columnComment"
-                :value="column.columnName"
-              ></el-option>
+              <el-option v-for="(column, index) in info.columns" :key="index"
+                :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -165,12 +160,8 @@
               </el-tooltip>
             </template>
             <el-select v-model="info.treeName" placeholder="请选择">
-              <el-option
-                v-for="(column, index) in info.columns"
-                :key="index"
-                :label="column.columnName + '：' + column.columnComment"
-                :value="column.columnName"
-              ></el-option>
+              <el-option v-for="(column, index) in info.columns" :key="index"
+                :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -189,12 +180,8 @@
               </el-tooltip>
             </template>
             <el-select v-model="info.subTableName" placeholder="请选择" @change="subSelectChange">
-              <el-option
-                v-for="(table, index) in tables"
-                :key="index"
-                :label="table.tableName + '：' + table.tableComment"
-                :value="table.tableName"
-              ></el-option>
+              <el-option v-for="(table, index) in tables" :key="index" :label="table.tableName + '：' + table.tableComment"
+                :value="table.tableName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -207,12 +194,8 @@
               </el-tooltip>
             </template>
             <el-select v-model="info.subTableFkName" placeholder="请选择">
-              <el-option
-                v-for="(column, index) in subColumns"
-                :key="index"
-                :label="column.columnName + '：' + column.columnComment"
-                :value="column.columnName"
-              ></el-option>
+              <el-option v-for="(column, index) in subColumns" :key="index"
+                :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -243,6 +226,7 @@ const props = defineProps({
 // 表单校验
 const rules = ref({
   tplCategory: [{ required: true, message: "请选择生成模板", trigger: "blur" }],
+  tplWebType: [{ required: true, message: "请选择生成模板类型", trigger: "blur" }],
   packageName: [{ required: true, message: "请输入生成包路径", trigger: "blur" }],
   moduleName: [{ required: true, message: "请输入生成模块名", trigger: "blur" }],
   businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
@@ -275,6 +259,11 @@ function getMenuTreeselect() {
 
 watch(() => props.info.subTableName, val => {
   setSubTableColumns(val);
+});
+watch(() => props.info.tplWebType, val => {
+  if (val === '') {
+    props.info.tplWebType = "element-ui";
+  }
 });
 
 getMenuTreeselect();
