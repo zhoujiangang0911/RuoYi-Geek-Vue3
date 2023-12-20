@@ -113,7 +113,8 @@ function init() {
         let toolbar = DataQuill.getModule("toolbar");
         toolbar.addHandler("image", (value) => {
             if (value) {
-                upload.value.$children[0].$refs.input.click();
+                // upload.value.$children[0].$refs.input.click();
+                console.log(value);
             } else {
                 // quill.format("image", false);
             }
