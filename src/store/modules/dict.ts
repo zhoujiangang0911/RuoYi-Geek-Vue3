@@ -1,12 +1,31 @@
+import { defineStore } from "pinia";
+type DictKey = string | null;
+type DictValue = {
+  createBy: string,
+  createTime: string,
+  updateBy: string|null,
+  updateTime: string|null,
+  remark: string|null,
+  dictCode: string,
+  dictSort: number,
+  dictLabel: string,
+  dictValue: string,
+  dictType: string,
+  cssClass: null|string,
+  listClass: 'primary'| 'success'| 'warning'| 'danger'| 'info'| 'text',
+  isDefault: "N"|"Y",
+  status: "0"|"1",
+  default: boolean
+}
 const useDictStore = defineStore(
   'dict',
   {
     state: () => ({
-      dict: new Array()
+      dict: new Array<{key: DictKey, value: DictValue}>()
     }),
     actions: {
       // 获取字典
-      getDict(_key) {
+      getDict(_key: DictKey) {
         if (_key == null && _key == "") {
           return null;
         }
@@ -21,7 +40,7 @@ const useDictStore = defineStore(
         }
       },
       // 设置字典
-      setDict(_key, value) {
+      setDict(_key: DictKey, value:DictValue) {
         if (_key !== null && _key !== "") {
           this.dict.push({
             key: _key,
@@ -30,7 +49,7 @@ const useDictStore = defineStore(
         }
       },
       // 删除字典
-      removeDict(_key) {
+      removeDict(_key: DictKey) {
         var bln = false;
         try {
           for (let i = 0; i < this.dict.length; i++) {
