@@ -104,7 +104,7 @@ onMounted(() => {
     init(0)
 })
 onBeforeUnmount(() => {
-    Quill = null;
+    DataQuill = null;
 })
 function init() {
     DataQuill = new Quill(editor.value, options);
