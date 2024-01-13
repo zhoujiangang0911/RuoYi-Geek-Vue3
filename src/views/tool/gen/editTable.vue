@@ -5,25 +5,17 @@
         <basic-info-form ref="basicInfo" :info="info" />
       </el-tab-pane>
       <el-tab-pane label="字段信息" name="columnInfo">
-        <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
-          <el-table-column label="序号" type="index" min-width="5%"/>
-          <el-table-column
-            label="字段列名"
-            prop="columnName"
-            min-width="10%"
-            :show-overflow-tooltip="true"
-          />
+        <el-switch v-model="info.haveSubColumn" active-value="1" inactive-value="0" active-text="开启字段关联"
+          inactive-text="关闭字段关联" />
+        <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight" style="width: 100%">
+          <el-table-column label="序号" type="index" min-width="5%" fixed />
+          <el-table-column fixed label="字段列名" prop="columnName" min-width="10%" :show-overflow-tooltip="true" />
           <el-table-column label="字段描述" min-width="10%">
             <template #default="scope">
               <el-input v-model="scope.row.columnComment"></el-input>
             </template>
           </el-table-column>
-          <el-table-column
-            label="物理类型"
-            prop="columnType"
-            min-width="10%"
-            :show-overflow-tooltip="true"
-          />
+          <el-table-column label="物理类型" prop="columnType" min-width="10%" :show-overflow-tooltip="true" />
           <el-table-column label="Java类型" min-width="11%">
             <template #default="scope">
               <el-select v-model="scope.row.javaType">
@@ -100,15 +92,49 @@
           <el-table-column label="字典类型" min-width="12%">
             <template #default="scope">
               <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择">
-                <el-option
-                  v-for="dict in dictOptions"
-                  :key="dict.dictType"
-                  :label="dict.dictName"
-                  :value="dict.dictType">
+                <el-option v-for="dict in dictOptions" :key="dict.dictType" :label="dict.dictName" :value="dict.dictType">
                   <span style="float: left">{{ dict.dictName }}</span>
                   <span style="float: right; color: #8492a6; font-size: 13px">{{ dict.dictType }}</span>
-              </el-option>
+                </el-option>
               </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column type="expand">
+            <template #default="scope">
+              <el-form inline :disabled="info.haveSubColumn != 1">
+                <el-form-item label="关联表" >
+                  <el-select v-model="scope.row.subColumnTableName" placeholder="请选择">
+                    <el-option v-for="(table, index) in tables" :key="index"
+                      :label="table.tableName + '：' + table.tableComment" :value="table.tableName"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="关联字段" >
+                  <el-select v-model="scope.row.subColumnFkName" placeholder="请选择" >
+                    <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)" :key="index"
+                      :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="映射字段" >
+                  <el-select v-model="scope.row.subColumnName" placeholder="请选择" >
+                    <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)" :key="index"
+                      :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="java属性" >
+                    <el-input v-model="scope.row.subColumnJavaField"></el-input>
+                </el-form-item>
+                <el-form-item label="映射字段Java类型" >
+                  <el-select v-model="scope.row.subColumnJavaType">
+                    <el-option label="Long" value="Long" />
+                    <el-option label="String" value="String" />
+                    <el-option label="Integer" value="Integer" />
+                    <el-option label="Double" value="Double" />
+                    <el-option label="BigDecimal" value="BigDecimal" />
+                    <el-option label="Date" value="Date" />
+                    <el-option label="Boolean" value="Boolean" />
+                  </el-select>
+                </el-form-item>
+              </el-form>
             </template>
           </el-table-column>
         </el-table>
@@ -131,9 +157,9 @@ import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
-
 const route = useRoute();
 const { proxy } = getCurrentInstance();
+
 
 const activeName = ref("columnInfo");
 const tableHeight = ref(document.documentElement.scrollHeight - 245 + "px");
@@ -141,6 +167,15 @@ const tables = ref([]);
 const columns = ref([]);
 const dictOptions = ref([]);
 const info = ref({});
+
+function setSubTableColumns(value) {
+  for (var item in tables.value) {
+    const name = tables.value[item].tableName;
+    if (value === name) {
+      return tables.value[item].columns;
+    }
+  }
+}
 
 /** 提交按钮 */
 function submitForm() {

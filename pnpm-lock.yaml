@@ -18,8 +18,8 @@ dependencies:
     specifier: 5.4.0
     version: 5.4.0
   element-plus:
-    specifier: 2.2.21
-    version: 2.2.21(vue@3.2.45)
+    specifier: 2.4.1
+    version: 2.4.1(vue@3.2.45)
   file-saver:
     specifier: 2.0.5
     version: 2.0.5
@@ -789,8 +789,8 @@ packages:
       zrender: 5.4.0
     dev: false
 
-  /element-plus@2.2.21(vue@3.2.45):
-    resolution: {integrity: sha512-wZUePoXZ1zuCkzENK/8mn+mekuLJ9OoGYiudjUujzCf+T8HfOQl+TKQStwOkGBNk93fK8e9YdFIty4jH4AX6dg==}
+  /element-plus@2.4.1(vue@3.2.45):
+    resolution: {integrity: sha512-t7nl+vQlkBKVk1Ag6AufSDyFV8YIXxTFsaya4Nz/0tiRlcz65WPN4WMFeNURuFJleu1HLNtP4YyQKMuS7El8uA==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
