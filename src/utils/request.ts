@@ -13,9 +13,7 @@ let downloadLoadingInstance: any;
 export let isRelogin = { show: false };
 //@ts-ignore
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-interface RequestInstance extends AxiosInstance {
-  (config: { url: string, method: Method, data?: any, params?: any, headers?: any }): AxiosPromise
-}
+import { RequestConfig, RequestInstance } from '@/types/request'
 // 创建axios实例
 const service: RequestInstance = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
@@ -23,9 +21,6 @@ const service: RequestInstance = axios.create({
   // 超时
   timeout: 10000
 })
-type RequestConfig = {
-  headers: { [key: string]: any }
-}
 
 // request拦截器
 service.interceptors.request.use((config: AxiosRequestConfig<RequestConfig>) => {
