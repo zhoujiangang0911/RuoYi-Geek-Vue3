@@ -154,5 +154,18 @@ export async function download(url: string, params: any, filename: string, confi
     downloadLoadingInstance.close()
   }
 }
+const request = service
+export function postAction(data: any, url: string, isToken: boolean = true) {
+  return request({ data, url, method: 'POST', headers: { isToken }, })
+}
+export function getAction(params: any, url: string, isToken: boolean = true) {
+  return request({ params, url, method: 'GET', headers: { isToken }, })
+}
+export function putAction(data: any, url: string, isToken: boolean = true) {
+  return request({ data, url, method: 'PUT', headers: { isToken }, })
+}
+export function deleteAction(data: any, url: string, isToken: boolean = true) {
+  return request({ data, url, method: 'DELETE', headers: { isToken }, })
+}
 
-export default service
+export default request
