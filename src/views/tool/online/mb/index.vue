@@ -3,74 +3,34 @@
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="标签名" prop="tag">
         <el-select v-model="queryParams.tag" placeholder="请选择标签名" clearable>
-          <el-option
-            v-for="dict in online_api_tag"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in online_api_tag" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="标签id" prop="tagId">
-        <el-input
-          v-model="queryParams.tagId"
-          placeholder="请输入标签id"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.tagId" placeholder="请输入标签id" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="参数类型" prop="parameterType">
-        <el-input
-          v-model="queryParams.parameterType"
-          placeholder="请输入参数类型"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.parameterType" placeholder="请输入参数类型" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="结果类型" prop="resultMap">
-        <el-input
-          v-model="queryParams.resultMap"
-          placeholder="请输入结果类型"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.resultMap" placeholder="请输入结果类型" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="请求路径" prop="path">
-        <el-input
-          v-model="queryParams.path"
-          placeholder="请输入请求路径"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.path" placeholder="请输入请求路径" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="请求方式" prop="method">
         <el-select v-model="queryParams.method" placeholder="请选择请求方式" clearable>
-          <el-option
-            v-for="dict in online_api_method"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in online_api_method" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="响应类型" prop="resultType">
         <el-select v-model="queryParams.resultType" placeholder="请选择响应类型" clearable>
-          <el-option
-            v-for="dict in online_api_result"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in online_api_result" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="执行器" prop="actuator">
         <el-select v-model="queryParams.actuator" placeholder="请选择执行器" clearable>
-          <el-option
-            v-for="dict in online_api_actuator"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
+          <el-option v-for="dict in online_api_actuator" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -81,42 +41,19 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['online:mb:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['online:mb:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['online:mb:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['online:mb:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['online:mb:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['online:mb:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['online:mb:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="Download" @click="handleExport"
+          v-hasPermi="['online:mb:export']">导出</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -126,58 +63,97 @@
       <el-table-column label="主键" align="center" prop="mbId" />
       <el-table-column label="标签名" align="center" prop="tag">
         <template #default="scope">
-          <dict-tag :options="online_api_tag" :value="scope.row.tag"/>
+          <dict-tag :options="online_api_tag" :value="scope.row.tag" />
         </template>
       </el-table-column>
-      <el-table-column label="标签id" align="center" prop="tagId" />
       <el-table-column label="参数类型" align="center" prop="parameterType" />
       <el-table-column label="结果类型" align="center" prop="resultMap" />
-      <el-table-column label="sql语句" align="center" prop="sql" />
       <el-table-column label="请求路径" align="center" prop="path" />
       <el-table-column label="请求方式" align="center" prop="method">
         <template #default="scope">
-          <dict-tag :options="online_api_method" :value="scope.row.method"/>
+          <dict-tag :options="online_api_method" :value="scope.row.method" />
         </template>
       </el-table-column>
       <el-table-column label="响应类型" align="center" prop="resultType">
         <template #default="scope">
-          <dict-tag :options="online_api_result" :value="scope.row.resultType"/>
+          <dict-tag :options="online_api_result" :value="scope.row.resultType" />
         </template>
       </el-table-column>
       <el-table-column label="执行器" align="center" prop="actuator">
         <template #default="scope">
-          <dict-tag :options="online_api_actuator" :value="scope.row.actuator"/>
+          <dict-tag :options="online_api_actuator" :value="scope.row.actuator" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="300" fixed="right">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['online:mb:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['online:mb:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['online:mb:edit']">修改</el-button>
+          <el-button link type="primary" icon="View" @click="generatedCode(scope.row)"
+            v-hasPermi="['online:mb:edit']">查看</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['online:mb:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
+      @pagination="getList" />
+
+    <el-dialog :title="generated.path" v-model="generated.open" width="500px" append-to-body>
+      <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code" v-copyText:callback="copyTextSuccess"
+        style="float:right">&nbsp;复制</el-link>
+      <div style="display: flex;justify-content: center;align-content: center;">
+        <div style="width: 500px;">
+          <pre v-text="generated.code"></pre>
+        </div>
+      </div>
+    </el-dialog>
 
     <!-- 添加或修改mybatis在线接口对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="mbRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="标签名" prop="tag">
-          <el-select v-model="form.tag" placeholder="请选择标签名">
-            <el-option
-              v-for="dict in online_api_tag"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
+
+        <el-form-item label="请求路径" prop="path">
+          <el-input v-model="form.path" placeholder="请输入请求路径" />
         </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="标签名" prop="tag">
+              <el-select v-model="form.tag" placeholder="请选择标签名">
+                <el-option v-for="dict in online_api_tag" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="请求方式" prop="method">
+              <el-select v-model="form.method" placeholder="请选择请求方式">
+                <el-option v-for="dict in online_api_method" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="响应类型" prop="resultType">
+              <el-select v-model="form.resultType" placeholder="请选择响应类型">
+                <el-option v-for="dict in online_api_result" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="执行器" prop="actuator">
+              <el-select v-model="form.actuator" placeholder="请选择执行器">
+                <el-option v-for="dict in online_api_actuator" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item label="标签id" prop="tagId">
           <el-input v-model="form.tagId" placeholder="请输入标签id" />
         </el-form-item>
@@ -188,41 +164,10 @@
           <el-input v-model="form.resultMap" placeholder="请输入结果类型" />
         </el-form-item>
         <el-form-item label="sql语句" prop="sql">
-          <el-input v-model="form.sql" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.sql" type="textarea" placeholder="请输入内容" :autosize="{ minRows: 4, maxRows: 8 }"
+            @keydown.tab.native="tabInput($event, row)" />
         </el-form-item>
-        <el-form-item label="请求路径" prop="path">
-          <el-input v-model="form.path" placeholder="请输入请求路径" />
-        </el-form-item>
-        <el-form-item label="请求方式" prop="method">
-          <el-select v-model="form.method" placeholder="请选择请求方式">
-            <el-option
-              v-for="dict in online_api_method"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="响应类型" prop="resultType">
-          <el-select v-model="form.resultType" placeholder="请选择响应类型">
-            <el-option
-              v-for="dict in online_api_result"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="执行器" prop="actuator">
-          <el-select v-model="form.actuator" placeholder="请选择执行器">
-            <el-option
-              v-for="dict in online_api_actuator"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -236,12 +181,46 @@
 
 <script setup name="Mb">
 import { listMb, getMb, delMb, addMb, updateMb } from "@/api/online/mb";
+import { reactive } from "vue";
 
 const { proxy } = getCurrentInstance();
 const { online_api_method, online_api_result, online_api_actuator, online_api_tag } = proxy.useDict('online_api_method', 'online_api_result', 'online_api_actuator', 'online_api_tag');
 
 const mbList = ref([]);
 const open = ref(false);
+const generated = reactive({
+  path: "",
+  code: "",
+  open: false
+})
+function generatedCode(row) {
+  generated.path = row.path
+  let code = "<" + row.tag + " "
+  code += "id=\"" + row.id + "\" "
+  code += "parameterType=\"" + row.parameterType + "\" "
+  code += "resultMap=\"" + row.resultMap + "\" "
+  code += ">\n"
+  code += row.sql
+  code += "\n</" + row.tag + ">"
+  generated.code = code
+  generated.open = true;
+}
+function tabInput(e, row) {
+  e.preventDefault()
+  const insertText = '\t'
+  const elInput = e.target
+  const startPos = elInput.selectionStart
+  const endPos = elInput.selectionEnd
+  if (startPos === undefined || endPos === undefined) return
+  const txt = elInput.value
+  elInput.value = txt.substring(0, startPos) + insertText + txt.substring(endPos)
+  elInput.focus()
+  elInput.selectionStart = startPos + insertText.length;
+  elInput.selectionEnd = startPos + insertText.length;
+  row.sql = elInput.value
+}
+
+
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -374,12 +353,12 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _mbIds = row.mbId || ids.value;
-  proxy.$modal.confirm('是否确认删除mybatis在线接口编号为"' + _mbIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm('是否确认删除mybatis在线接口编号为"' + _mbIds + '"的数据项？').then(function () {
     return delMb(_mbIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+  }).catch(() => { });
 }
 
 
@@ -391,5 +370,9 @@ function handleExport() {
   }, `mb_${new Date().getTime()}.xlsx`)
 }
 
+/** 复制代码成功 */
+function copyTextSuccess() {
+  proxy.$modal.msgSuccess("复制成功");
+}
 getList();
 </script>
