@@ -101,40 +101,62 @@
           </el-table-column>
           <el-table-column type="expand">
             <template #default="scope">
-              <el-form inline :disabled="info.haveSubColumn != 1">
-                <el-form-item label="关联表" >
-                  <el-select v-model="scope.row.subColumnTableName" placeholder="请选择">
-                    <el-option v-for="(table, index) in tables" :key="index"
-                      :label="table.tableName + '：' + table.tableComment" :value="table.tableName"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="关联字段" >
-                  <el-select v-model="scope.row.subColumnFkName" placeholder="请选择" >
-                    <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)" :key="index"
-                      :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="映射字段" >
-                  <el-select v-model="scope.row.subColumnName" placeholder="请选择" >
-                    <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)" :key="index"
-                      :label="column.columnName + '：' + column.columnComment" :value="column.columnName"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="java属性" >
-                    <el-input v-model="scope.row.subColumnJavaField"></el-input>
-                </el-form-item>
-                <el-form-item label="映射字段Java类型" >
-                  <el-select v-model="scope.row.subColumnJavaType">
-                    <el-option label="Long" value="Long" />
-                    <el-option label="String" value="String" />
-                    <el-option label="Integer" value="Integer" />
-                    <el-option label="Double" value="Double" />
-                    <el-option label="BigDecimal" value="BigDecimal" />
-                    <el-option label="Date" value="Date" />
-                    <el-option label="Boolean" value="Boolean" />
-                  </el-select>
-                </el-form-item>
-              </el-form>
+              <div style="width: 90%;">
+                <el-form :disabled="info.haveSubColumn != 1" label-width="150px">
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="关联表">
+                        <el-select v-model="scope.row.subColumnTableName" placeholder="请选择">
+                          <el-option v-for="(table, index) in tables" :key="index"
+                            :label="table.tableName + '：' + table.tableComment" :value="table.tableName"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="关联字段">
+                        <el-select v-model="scope.row.subColumnFkName" placeholder="请选择">
+                          <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)"
+                            :key="index" :label="column.columnName + '：' + column.columnComment"
+                            :value="column.columnName"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="映射字段">
+                        <el-select v-model="scope.row.subColumnName" placeholder="请选择">
+                          <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)"
+                            :key="index" :label="column.columnName + '：' + column.columnComment"
+                            :value="column.columnName"></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="8">
+                      <el-form-item label="java属性">
+                        <el-input v-model="scope.row.subColumnJavaField"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-form-item label="映射字段Java类型">
+                        <el-select v-model="scope.row.subColumnJavaType">
+                          <el-option label="Long" value="Long" />
+                          <el-option label="String" value="String" />
+                          <el-option label="Integer" value="Integer" />
+                          <el-option label="Double" value="Double" />
+                          <el-option label="BigDecimal" value="BigDecimal" />
+                          <el-option label="Date" value="Date" />
+                          <el-option label="Boolean" value="Boolean" />
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8"></el-col>
+                  </el-row>
+
+
+
+                </el-form>
+              </div>
             </template>
           </el-table-column>
         </el-table>

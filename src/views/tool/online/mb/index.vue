@@ -376,3 +376,8 @@ function copyTextSuccess() {
 }
 getList();
 </script>
+<style lang="scss" scoped>
+.el-form-item{
+  min-width: 200px;
+}
+</style>
