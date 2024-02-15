@@ -140,6 +140,9 @@ watch(valueId, () => {
   font-weight: normal;
 }
 
+.el-tree-select{
+  width: 100%;
+}
 ul li .el-tree .el-tree-node__content {
   height: auto;
   padding: 0 20px;
