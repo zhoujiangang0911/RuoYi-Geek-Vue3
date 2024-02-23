@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import useDragStore from './dragStore';
+const props = defineProps({
+    copy: {
+        type: Boolean,
+        default: false
+    },
+})
 const dragStore = useDragStore();
 /* 
     dragstart
@@ -16,7 +21,10 @@ const dragStore = useDragStore();
 function dragstart(e: DragEvent) {
     // 要被拖拽的元素开始拖拽时触发，这个事件对象是被拖拽元素
     const element = e.target as HTMLDivElement // 拖拽的元素
-    dragStore.startDrag(element)
+    if (props.copy)
+        dragStore.startDragFromCopy(element)
+    else
+        dragStore.startDrag(element)
 }
 </script>
 <template>
