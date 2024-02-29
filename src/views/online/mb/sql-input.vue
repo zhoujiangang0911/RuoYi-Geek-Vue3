@@ -34,7 +34,11 @@ function checkBrackets(str) {
 function filterChain(str) {
     const filterList = [
         {
-            filter: /(?!=[\s]|[&nbsp;])?(select|where|insert|update|delete|create|alter|drop|database|table|from|order|group|by|having|join|into|values|like|between|null|not|and|or|in|bigint|varchar|date|timestamp|union|all)(?!=[\s]|[&nbsp;])?/gi,
+            filter: /(?!=[\s]|[&nbsp;])?(count\(|date_format\(|find_in_set\()(.*?)(\))(?!=[\s]|[&nbsp;])?/gi,
+            replace(str) { return str.replace(this.filter, '<span class="code-sql">$1<span class="code-params">$2</span>$3</span>') }
+        },
+        {
+            filter: /(?<=^|&nbsp;|\s)(select|where|insert|update|delete|create|alter|drop|database|table|from|order|group|by|having|join|into|values|like|between|null|not|and|or|in|bigint|varchar|date|timestamp|union|all|as)(?=\s|&nbsp;|$)/gi,
             replace(str) { return str.replace(this.filter, '<span class="code-sql">$1</span>') }
         },
         {
@@ -45,11 +49,6 @@ function filterChain(str) {
             filter: /(&lt;\/if&gt;)/g,
             replace(str) { return str.replace(this.filter, '<span class="code-if">$1</span>') }
         },
-        {
-            filter: /(?!=[\s]|[&nbsp;])?(count\(|date_format\(|find_in_set\()(.*?)(\))(?!=[\s]|[&nbsp;])?/gi,
-            replace(str) { return str.replace(this.filter, '<span class="code-sql">$1<span class="code-params">$2</span>$3</span>') }
-        },
-
     ]
     for (let item of filterList) {
         if (item.filter.test(str)) str = item.replace(str)
