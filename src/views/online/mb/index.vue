@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" inline v-show="showSearch" label-width="68px">
       <el-form-item label="标签名" prop="tag">
-        <el-select v-model="queryParams.tag" placeholder="请选择标签名" clearable>
+        <el-select v-model="queryParams.tag" placeholder="请选择标签名" clearable style="width: 200px;">
           <el-option v-for="dict in online_api_tag" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
@@ -19,17 +19,17 @@
         <el-input v-model="queryParams.path" placeholder="请输入请求路径" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="请求方式" prop="method">
-        <el-select v-model="queryParams.method" placeholder="请选择请求方式" clearable>
+        <el-select v-model="queryParams.method" placeholder="请选择请求方式" clearable style="width: 200px;">
           <el-option v-for="dict in online_api_method" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="响应类型" prop="resultType">
-        <el-select v-model="queryParams.resultType" placeholder="请选择响应类型" clearable>
+        <el-select v-model="queryParams.resultType" placeholder="请选择响应类型" clearable style="width: 200px;">
           <el-option v-for="dict in online_api_result" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="执行器" prop="actuator">
-        <el-select v-model="queryParams.actuator" placeholder="请选择执行器" clearable>
+        <el-select v-model="queryParams.actuator" placeholder="请选择执行器" clearable style="width: 200px;">
           <el-option v-for="dict in online_api_actuator" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
@@ -89,6 +89,8 @@
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['online:mb:edit']">修改</el-button>
+          <el-button link type="primary" icon="View" @click="generatedCode(scope.row)"
+            v-hasPermi="['online:mb:edit']">查看</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
             v-hasPermi="['online:mb:remove']">删除</el-button>
         </template>
@@ -97,6 +99,16 @@
 
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
       @pagination="getList" />
+
+    <el-dialog :title="generated.path" v-model="generated.open" width="500px" append-to-body>
+      <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code" v-copyText:callback="copyTextSuccess"
+        style="float:right">&nbsp;复制</el-link>
+      <div style="display: flex;justify-content: center;align-content: center;">
+        <div style="width: 500px;">
+          <pre v-text="generated.code"></pre>
+        </div>
+      </div>
+    </el-dialog>
 
     <!-- 添加或修改mybatis在线接口对话框 -->
     <el-dialog :title="title" v-model="open" width="700px" append-to-body>
@@ -128,9 +140,24 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="请求路径" prop="path">
-          <el-input v-model="form.path" placeholder="请输入请求路径" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="请求路径" prop="path">
+              <el-input v-model="form.path" placeholder="请输入请求路径" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item prop="userId">
+              <el-checkbox v-model="form.userId" true-value="1" false-value="0" label="是否启用userId" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item prop="deptId">
+              <el-checkbox v-model="form.deptId" true-value="1" false-value="0" label="是否启用deptId" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item label="sql语句" prop="sql">
           <!-- <el-input v-model="form.sql" type="textarea" placeholder="请输入内容" /> -->
           <sql-input v-model="form.sql" placeholder="请输入sql语句"></sql-input>
@@ -159,7 +186,26 @@
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
-
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="鉴权类型" prop="resultType">
+              <el-select v-model="form.permissionType" placeholder="请选择鉴权类型">
+                <el-option label="无" :value="null"></el-option>
+                <el-option label="hasPermi(含有这些权限)" value="hasPermi"></el-option>
+                <el-option label="lacksPermi(不含这些权限)" value="lacksPermi"></el-option>
+                <el-option label="hasAnyPerm(含有任何权限)" value="hasAnyPermi"></el-option>
+                <el-option label="hasRole(含有这些角色)" value="hasRole"></el-option>
+                <el-option label="lacksRole(不含这些角色)" value="lacksRole"></el-option>
+                <el-option label="hasAnyRoles(含有任何角色)" value="hasAnyRoles"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="鉴权值" prop="resultType">
+              <el-input v-model="form.permissionValue" placeholder="请输入权限或者角色字符串"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -330,4 +376,30 @@ function handleExport() {
 }
 
 getList();
+
+
+const generated = reactive({
+  path: "",
+  code: "",
+  open: false
+})
+function generatedCode(row) {
+  generated.path = row.path
+  let code = "<" + row.tag + " "
+  if (!!row.parameterType) {
+    code += "id=\"" + row.id + "\" "
+  }
+  if (!!row.parameterType) {
+    code += "parameterType=\"" + row.parameterType + "\" "
+  }
+  if (!!row.resultMap) {
+    code += "resultMap=\"" + row.resultMap + "\" "
+  }
+  code += ">\n"
+  code += row.sql
+  code += "\n</" + row.tag + ">"
+  generated.code = code
+  generated.open = true;
+}
+
 </script>
