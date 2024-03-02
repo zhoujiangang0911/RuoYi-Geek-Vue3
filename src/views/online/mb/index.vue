@@ -386,8 +386,8 @@ const generated = reactive({
 function generatedCode(row) {
   generated.path = row.path
   let code = "<" + row.tag + " "
-  if (!!row.parameterType) {
-    code += "id=\"" + row.id + "\" "
+  if (!!row.tagId) {
+    code += "id=\"" + row.tagId + "\" "
   }
   if (!!row.parameterType) {
     code += "parameterType=\"" + row.parameterType + "\" "
