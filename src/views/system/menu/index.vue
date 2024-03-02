@@ -182,7 +182,9 @@
                            组件路径
                         </span>
                      </template>
-                     <el-input v-model="form.component" placeholder="请输入组件路径" />
+                     <el-input v-model="form.component" placeholder="请输入组件路径" >
+                        <template #prepend>src/view/</template>
+                     </el-input>
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType != 'M'">

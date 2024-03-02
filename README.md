@@ -64,7 +64,23 @@ yarn dev
 演示地址：http://vue.ruoyi.vip
 文档地址：http://doc.ruoyi.vip
 
-## 演示图
+### 新加功能和增强功能演示
+<table>
+    <tr>
+        <td><img src="./doc/image/online-mb-list.png"/></td>
+        <td><img src="./doc/image/online-mb-edit.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/image/online-mb-code.png"/></td>
+        <td><img src="./doc/image/form-edit.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="./doc/image/code-edit.png"/></td>
+        <td><img src="./doc/image/code-show.png"/></td>
+    </tr>
+</table>
+
+### 原有功能演示
 
 <table>
     <tr>
@@ -100,7 +116,3 @@ yarn dev
         <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
     </tr>
 </table>
-
-## 若依前后端分离交流群
-
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-937441-blue.svg)](https://jq.qq.com/?_wv=1027&k=5bVB1og) [![加入QQ群](https://img.shields.io/badge/已满-887144332-blue.svg)](https://jq.qq.com/?_wv=1027&k=5eiA4DH) [![加入QQ群](https://img.shields.io/badge/已满-180251782-blue.svg)](https://jq.qq.com/?_wv=1027&k=5AxMKlC) [![加入QQ群](https://img.shields.io/badge/已满-104180207-blue.svg)](https://jq.qq.com/?_wv=1027&k=51G72yr) [![加入QQ群](https://img.shields.io/badge/已满-186866453-blue.svg)](https://jq.qq.com/?_wv=1027&k=VvjN2nvu) [![加入QQ群](https://img.shields.io/badge/已满-201396349-blue.svg)](https://jq.qq.com/?_wv=1027&k=5vYAqA05) [![加入QQ群](https://img.shields.io/badge/已满-101456076-blue.svg)](https://jq.qq.com/?_wv=1027&k=kOIINEb5) [![加入QQ群](https://img.shields.io/badge/已满-101539465-blue.svg)](https://jq.qq.com/?_wv=1027&k=UKtX5jhs) [![加入QQ群](https://img.shields.io/badge/已满-264312783-blue.svg)](https://jq.qq.com/?_wv=1027&k=EI9an8lJ) [![加入QQ群](https://img.shields.io/badge/已满-167385320-blue.svg)](https://jq.qq.com/?_wv=1027&k=SWCtLnMz) [![加入QQ群](https://img.shields.io/badge/已满-104748341-blue.svg)](https://jq.qq.com/?_wv=1027&k=96Dkdq0k) [![加入QQ群](https://img.shields.io/badge/已满-160110482-blue.svg)](https://jq.qq.com/?_wv=1027&k=0fsNiYZt) [![加入QQ群](https://img.shields.io/badge/170801498-blue.svg)](https://jq.qq.com/?_wv=1027&k=7xw4xUG1) 点击按钮入群。

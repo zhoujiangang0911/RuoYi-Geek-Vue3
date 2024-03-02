@@ -148,12 +148,12 @@
           </el-col>
           <el-col :span="5">
             <el-form-item prop="userId">
-              <el-checkbox v-model="form.userId" true-value="1" false-value="0" label="是否启用userId" />
+              <el-checkbox v-model="form.userId" false-value="1" false-value="0" label="是否启用userId" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item prop="deptId">
-              <el-checkbox v-model="form.deptId" true-value="1" false-value="0" label="是否启用deptId" />
+              <el-checkbox v-model="form.deptId" false-value="1" false-value="0" label="是否启用deptId" />
             </el-form-item>
           </el-col>
         </el-row>
