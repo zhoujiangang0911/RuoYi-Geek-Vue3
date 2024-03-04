@@ -61,31 +61,42 @@
     <el-table v-loading="loading" :data="mbList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="mbId" />
-      <el-table-column label="标签名" align="center" prop="tag">
+      <el-table-column label="标签名" align="center" prop="tag" width="80">
         <template #default="scope">
           <dict-tag :options="online_api_tag" :value="scope.row.tag" />
         </template>
       </el-table-column>
-      <el-table-column label="标签id" align="center" prop="tagId" />
-      <el-table-column label="参数类型" align="center" prop="parameterType" />
-      <el-table-column label="结果类型" align="center" prop="resultMap" />
-      <el-table-column label="请求路径" align="center" prop="path" />
-      <el-table-column label="请求方式" align="center" prop="method">
+      <el-table-column label="请求方式" align="center" prop="method" width="80">
+
         <template #default="scope">
           <dict-tag :options="online_api_method" :value="scope.row.method" />
         </template>
       </el-table-column>
+      <el-table-column label="标签id" align="center" prop="tagId" width="150" />
+      <el-table-column label="请求路径" align="center" prop="path" width="200" />
+      <el-table-column label="权限" align="center" width="150">
+
+        <template #default="scope">
+          {{ scope.row.permissionType }}("{{ scope.row.permissionValue }}")
+        </template>
+      </el-table-column>
+      <el-table-column label="参数类型" align="center" prop="parameterType" />
+      <el-table-column label="结果类型" align="center" prop="resultMap" />
+
       <el-table-column label="响应类型" align="center" prop="resultType">
+
         <template #default="scope">
           <dict-tag :options="online_api_result" :value="scope.row.resultType" />
         </template>
       </el-table-column>
-      <el-table-column label="执行器" align="center" prop="actuator">
+      <el-table-column label="执行器" align="center" prop="actuator" width="150">
+
         <template #default="scope">
           <dict-tag :options="online_api_actuator" :value="scope.row.actuator" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="200">
+
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['online:mb:edit']">修改</el-button>
@@ -97,8 +108,8 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
-      @pagination="getList" />
+    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize" @pagination="getList" />
 
     <el-dialog :title="generated.path" v-model="generated.open" width="500px" append-to-body>
       <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code" v-copyText:callback="copyTextSuccess"
@@ -148,12 +159,12 @@
           </el-col>
           <el-col :span="5">
             <el-form-item prop="userId">
-              <el-checkbox v-model="form.userId" false-value="1" false-value="0" label="是否启用userId" />
+              <el-checkbox v-model="form.userId" true-value="1" false-value="0" label="是否启用userId" />
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item prop="deptId">
-              <el-checkbox v-model="form.deptId" false-value="1" false-value="0" label="是否启用deptId" />
+              <el-checkbox v-model="form.deptId" true-value="1" false-value="0" label="是否启用deptId" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -207,6 +218,7 @@
           </el-col>
         </el-row>
       </el-form>
+
       <template #footer>
         <div class="dialog-footer">
           <el-button type="primary" @click="submitForm">确 定</el-button>
