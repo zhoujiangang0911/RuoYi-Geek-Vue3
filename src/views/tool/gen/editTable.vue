@@ -26,6 +26,7 @@
                 <el-option label="BigDecimal" value="BigDecimal" />
                 <el-option label="Date" value="Date" />
                 <el-option label="Boolean" value="Boolean" />
+                <el-option label="LocalDate" value="LocalDate" />
               </el-select>
             </template>
           </el-table-column>
@@ -106,7 +107,7 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="关联表">
-                        <el-select v-model="scope.row.subColumnTableName" placeholder="请选择">
+                        <el-select v-model="scope.row.subColumnTableName" clearable placeholder="请选择">
                           <el-option v-for="(table, index) in tables" :key="index"
                             :label="table.tableName + '：' + table.tableComment" :value="table.tableName"></el-option>
                         </el-select>
@@ -114,7 +115,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="关联字段">
-                        <el-select v-model="scope.row.subColumnFkName" placeholder="请选择">
+                        <el-select v-model="scope.row.subColumnFkName" clearable placeholder="请选择">
                           <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)"
                             :key="index" :label="column.columnName + '：' + column.columnComment"
                             :value="column.columnName"></el-option>
@@ -123,7 +124,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="映射字段">
-                        <el-select v-model="scope.row.subColumnName" placeholder="请选择">
+                        <el-select v-model="scope.row.subColumnName" clearable placeholder="请选择">
                           <el-option v-for="(column, index) in setSubTableColumns(scope.row.subColumnTableName)"
                             :key="index" :label="column.columnName + '：' + column.columnComment"
                             :value="column.columnName"></el-option>
@@ -134,12 +135,12 @@
                   <el-row>
                     <el-col :span="8">
                       <el-form-item label="java属性">
-                        <el-input v-model="scope.row.subColumnJavaField"></el-input>
+                        <el-input v-model="scope.row.subColumnJavaField" clearable></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="映射字段Java类型">
-                        <el-select v-model="scope.row.subColumnJavaType">
+                        <el-select v-model="scope.row.subColumnJavaType" clearable>
                           <el-option label="Long" value="Long" />
                           <el-option label="String" value="String" />
                           <el-option label="Integer" value="Integer" />
@@ -152,9 +153,6 @@
                     </el-col>
                     <el-col :span="8"></el-col>
                   </el-row>
-
-
-
                 </el-form>
               </div>
             </template>

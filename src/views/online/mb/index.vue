@@ -112,13 +112,17 @@
       v-model:limit="queryParams.pageSize" @pagination="getList" />
 
     <el-dialog :title="generated.path" v-model="generated.open" width="500px" append-to-body>
-      <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code" v-copyText:callback="copyTextSuccess"
-        style="float:right">&nbsp;复制</el-link>
-      <div style="display: flex;justify-content: center;align-content: center;">
-        <div style="width: 500px;">
-          <pre v-text="generated.code"></pre>
-        </div>
-      </div>
+      <el-tabs v-model="tabsName" class="demo-tabs" @tab-click="tabHandleClick">
+        <el-tab-pane label="mapper.xml" name="mapper.xml">
+          <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code.xml"
+            v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+          <div style="display: flex;justify-content: center;align-content: center;">
+            <div style="width: 500px;">
+              <pre v-text="generated.code.xml"></pre>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </el-dialog>
 
     <!-- 添加或修改mybatis在线接口对话框 -->
@@ -232,7 +236,10 @@
 <script setup>
 import { listMb, getMb, delMb, addMb, updateMb } from "@/api/online/mb";
 import sqlInput from '@/views/online/mb/sql-input.vue'
+const tabsName = ref('mapper.xml')
+function tabHandleClick(tab, event) {
 
+}
 const { proxy } = getCurrentInstance();
 const { online_api_method, online_api_result, online_api_actuator, online_api_tag } = proxy.useDict('online_api_method', 'online_api_result', 'online_api_actuator', 'online_api_tag');
 
@@ -392,25 +399,31 @@ getList();
 
 const generated = reactive({
   path: "",
-  code: "",
+  code: {
+    xml: "",
+    controller: "",
+  },
   open: false
 })
 function generatedCode(row) {
   generated.path = row.path
-  let code = "<" + row.tag + " "
-  if (!!row.tagId) {
-    code += "id=\"" + row.tagId + "\" "
+  function getXml() {
+    let code = "<" + row.tag + " "
+    if (!!row.tagId) {
+      code += "id=\"" + row.tagId + "\" "
+    }
+    if (!!row.parameterType) {
+      code += "parameterType=\"" + row.parameterType + "\" "
+    }
+    if (!!row.resultMap) {
+      code += "resultMap=\"" + row.resultMap + "\" "
+    }
+    code += ">\n"
+    code += row.sql
+    code += "\n</" + row.tag + ">"
+    generated.code.xml = code
   }
-  if (!!row.parameterType) {
-    code += "parameterType=\"" + row.parameterType + "\" "
-  }
-  if (!!row.resultMap) {
-    code += "resultMap=\"" + row.resultMap + "\" "
-  }
-  code += ">\n"
-  code += row.sql
-  code += "\n</" + row.tag + ">"
-  generated.code = code
+  getXml()
   generated.open = true;
 }
 
