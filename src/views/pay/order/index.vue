@@ -118,12 +118,6 @@
     <!-- 添加或修改订单对话框 -->
     <el-dialog :title="title" v-model="open" width="700px" append-to-body>
       <el-form ref="orderRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="用户id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户id" />
-        </el-form-item>
-        <el-form-item label="订单号" prop="orderNumber">
-          <el-input v-model="form.orderNumber" placeholder="请输入订单号" />
-        </el-form-item>
         <el-form-item label="订单总金额" prop="totalAmount">
           <el-input v-model="form.totalAmount" placeholder="请输入订单总金额" />
         </el-form-item>
