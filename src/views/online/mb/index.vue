@@ -205,7 +205,7 @@
           <el-col :span="12">
             <el-form-item label="鉴权类型" prop="resultType">
               <el-select v-model="form.permissionType" placeholder="请选择鉴权类型">
-                <el-option label="无" :value="null"></el-option>
+                <el-option label="无" value="无"></el-option>
                 <el-option label="hasPermi(含有这些权限)" value="hasPermi"></el-option>
                 <el-option label="lacksPermi(不含这些权限)" value="lacksPermi"></el-option>
                 <el-option label="hasAnyPerm(含有任何权限)" value="hasAnyPermi"></el-option>
