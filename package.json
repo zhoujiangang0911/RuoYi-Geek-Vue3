@@ -10,9 +10,12 @@
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+    "url": "https://gitee.com/geek-xd/ruo-yi-vue3-geek.git"
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",
@@ -26,12 +29,12 @@
     "jsencrypt": "3.3.1",
     "minimatch": "^9.0.3",
     "nprogress": "0.2.0",
-    "pinia": "2.0.22",
+    "pinia": "2.1.7",
     "quill": "^1.3.7",
     "vform3-builds": "^3.0.10",
-    "vue": "3.4.19",
-    "vue-cropper": "1.0.3",
-    "vue-router": "4.1.4"
+    "vue": "3.4.21",
+    "vue-cropper": "1.1.1",
+    "vue-router": "4.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.0.4",

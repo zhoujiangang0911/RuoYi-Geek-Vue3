@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import dragComponents from '@/views/tool/build/components/drag-components.vue'
+import dragComponent from '@/views/tool/build/components/drag-component.vue'
 import dragContainer from "./components/drag-container.vue";
 import useDragStore from './components/dragStore';
 const dragStore = useDragStore();
@@ -58,9 +58,9 @@ function drop(e: DragEvent) {
 
         </div>
         <el-aside width="200px">
-          <drag-components>
+          <drag-component>
             <el-input></el-input>
-          </drag-components>
+          </drag-component>
         </el-aside>
         <el-main>
           <drag-container></drag-container>
