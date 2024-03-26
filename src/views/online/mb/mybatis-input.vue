@@ -8,7 +8,11 @@ const props = defineProps({
     width: {
         type: String,
         default: '100%'
-    }
+    },
+    mode: {
+        type: String,
+        default: 'input' // 'show'
+    },
 })
 const height = ref('200px')
 const width = ref('100%')
@@ -35,19 +39,23 @@ function filterChain(str) {
     const filterList = [
         {
             filter: /(?!=[\s]|[&nbsp;])?(count\(|date_format\(|find_in_set\()(.*?)(\))(?!=[\s]|[&nbsp;])?/gi,
-            replace(str) { return str.replace(this.filter, '<span class="code-sql">$1<span class="code-params">$2</span>$3</span>') }
+            replace(str) { return str.replace(this.filter, '<span class="code-sql">$1<span class="code-fun-params">$2</span>$3</span>') }
         },
         {
             filter: /(?<=^|&nbsp;|\s)(select|where|insert|update|delete|create|alter|drop|database|table|from|order|group|by|having|join|into|values|like|between|null|not|and|or|in|bigint|varchar|date|timestamp|union|all|as)(?=\s|&nbsp;|$)/gi,
             replace(str) { return str.replace(this.filter, '<span class="code-sql">$1</span>') }
         },
         {
-            filter: /(&lt;if.*?&gt;)/g,
-            replace(str) { return str.replace(this.filter, '<span class="code-if">$1</span>') }
+            filter: /(&lt;.*?&gt;)/g,
+            replace(str) { return str.replace(this.filter, '<span class="code-tag">$1</span>') }
         },
         {
-            filter: /(&lt;\/if&gt;)/g,
-            replace(str) { return str.replace(this.filter, '<span class="code-if">$1</span>') }
+            filter: /(&lt;\/.*?&gt;)/g,
+            replace(str) { return str.replace(this.filter, '<span class="code-tag">$1</span>') }
+        },
+        {
+            filter: /(#{.*?})/g,
+            replace(str) { return str.replace(this.filter, '<span class="code-insert-params">$1</span>') }
         },
     ]
     for (let item of filterList) {
@@ -134,8 +142,8 @@ onMounted(() => {
 </script>
 <template>
     <div class="sql-wrap" :style="{ height, width }">
-        <textarea class="sql-input" ref="sqlInput" @scroll="wheelHandler" v-model="model"
-            :style="{ height, width }"></textarea>
+        <textarea v-show="mode === 'input'" class="sql-input" ref="sqlInput"
+            @scroll="wheelHandler" v-model="model" :style="{ height, width }"></textarea>
         <div class="sql-show" ref="sqlShow" @scroll="wheelHandler" :style="{ height, width }">
             <div class='sql-line' v-for="index in length" :key="index" v-html="htmls[index - 1]"></div>
         </div>
@@ -157,16 +165,20 @@ onMounted(() => {
     }
 
     :deep(.sql-show) {
-        .code-if {
+        .code-tag {
             color: green;
         }
 
         .code-sql {
-            color: aqua;
+            color: rgb(1, 176, 176);
         }
 
-        .code-params {
+        .code-fun-params {
             color: bisque;
+        }
+
+        .code-insert-params {
+            color: rgb(158, 156, 225);
         }
 
     }
@@ -209,7 +221,7 @@ onMounted(() => {
         z-index: 2;
         mix-blend-mode: multiply;
         color: transparent;
-        text-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 0px rgba(0, 0, 0, 0);
         white-space: nowrap;
     }
 

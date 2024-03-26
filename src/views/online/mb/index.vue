@@ -100,7 +100,7 @@
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['online:mb:edit']">修改</el-button>
-          <el-button link type="primary" icon="View" @click="generatedCode(scope.row)"
+          <el-button link type="primary" icon="View" @click="previewRow = scope.row, previewShow = true"
             v-hasPermi="['online:mb:edit']">查看</el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
             v-hasPermi="['online:mb:remove']">删除</el-button>
@@ -111,19 +111,7 @@
     <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <el-dialog :title="generated.path" v-model="generated.open" width="500px" append-to-body>
-      <el-tabs v-model="tabsName" class="demo-tabs" @tab-click="tabHandleClick">
-        <el-tab-pane label="mapper.xml" name="mapper.xml">
-          <el-link :underline="false" icon="DocumentCopy" v-copyText="generated.code.xml"
-            v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
-          <div style="display: flex;justify-content: center;align-content: center;">
-            <div style="width: 500px;">
-              <pre v-text="generated.code.xml"></pre>
-            </div>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>
+    <onlinePreview v-bind="previewRow" v-model="previewShow"></onlinePreview>
 
     <!-- 添加或修改mybatis在线接口对话框 -->
     <el-dialog :title="title" v-model="open" width="700px" append-to-body>
@@ -174,8 +162,7 @@
         </el-row>
 
         <el-form-item label="sql语句" prop="sql">
-          <!-- <el-input v-model="form.sql" type="textarea" placeholder="请输入内容" /> -->
-          <sql-input v-model="form.sql" placeholder="请输入sql语句"></sql-input>
+          <mybatis-input v-model="form.sql" placeholder="请输入sql语句"></mybatis-input>
         </el-form-item>
         <el-row :gutter="10">
           <el-col :span="12">
@@ -235,11 +222,11 @@
 
 <script setup>
 import { listMb, getMb, delMb, addMb, updateMb } from "@/api/online/mb";
-import sqlInput from '@/views/online/mb/sql-input.vue'
-const tabsName = ref('mapper.xml')
-function tabHandleClick(tab, event) {
+import mybatisInput from '@/views/online/mb/mybatis-input.vue'
+import onlinePreview from './online-preview.vue'
 
-}
+const previewRow = ref(null)
+const previewShow = ref(false)
 const { proxy } = getCurrentInstance();
 const { online_api_method, online_api_result, online_api_actuator, online_api_tag } = proxy.useDict('online_api_method', 'online_api_result', 'online_api_actuator', 'online_api_tag');
 
@@ -270,7 +257,17 @@ const data = reactive({
   },
   rules: {
     path: [
-      { required: true, message: "请求路径不能为空", trigger: "blur" }
+      { required: true, message: "请求路径不能为空", trigger: "blur" },
+      { pattern: /^[^<>"' |\\]+$/, message: "不能包含非法字符：< > \" ' \\\ |", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value[0] !== '/') {
+            callback(new Error('请以斜杠开头'))
+          } else {
+            callback()
+          }
+        }
+      }
     ],
     method: [
       { required: true, message: "请求方式不能为空", trigger: "change" }
@@ -395,36 +392,5 @@ function handleExport() {
 }
 
 getList();
-
-
-const generated = reactive({
-  path: "",
-  code: {
-    xml: "",
-    controller: "",
-  },
-  open: false
-})
-function generatedCode(row) {
-  generated.path = row.path
-  function getXml() {
-    let code = "<" + row.tag + " "
-    if (!!row.tagId) {
-      code += "id=\"" + row.tagId + "\" "
-    }
-    if (!!row.parameterType) {
-      code += "parameterType=\"" + row.parameterType + "\" "
-    }
-    if (!!row.resultMap) {
-      code += "resultMap=\"" + row.resultMap + "\" "
-    }
-    code += ">\n"
-    code += row.sql
-    code += "\n</" + row.tag + ">"
-    generated.code.xml = code
-  }
-  getXml()
-  generated.open = true;
-}
 
 </script>
