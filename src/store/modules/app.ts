@@ -21,13 +21,13 @@ const useAppStore = defineStore(
         this.sidebar.opened = !this.sidebar.opened
         this.sidebar.withoutAnimation = withoutAnimation
         if (this.sidebar.opened) {
-          localStorage.setItem('sidebarStatus', 1)
+          localStorage.setItem('sidebarStatus', '1')
         } else {
-          localStorage.setItem('sidebarStatus', 0)
+          localStorage.setItem('sidebarStatus', '0')
         }
       },
       closeSideBar(withoutAnimation:boolean) {
-        localStorage.setItem('sidebarStatus', 0)
+        localStorage.setItem('sidebarStatus', '0')
         this.sidebar.opened = false
         this.sidebar.withoutAnimation = withoutAnimation
       },
