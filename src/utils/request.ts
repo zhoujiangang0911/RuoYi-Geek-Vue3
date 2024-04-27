@@ -155,16 +155,16 @@ export async function download(url: string, params: any, filename: string, confi
   }
 }
 const request = service
-export function postAction(data: any, url: string, isToken: boolean = true) {
+export function postAction(url: string, data: any, isToken: boolean = true) {
   return request({ data, url, method: 'POST', headers: { isToken }, })
 }
-export function getAction(params: any, url: string, isToken: boolean = true) {
+export function getAction(url: string, params: any, isToken: boolean = true) {
   return request({ params, url, method: 'GET', headers: { isToken }, })
 }
-export function putAction(data: any, url: string, isToken: boolean = true) {
+export function putAction(url: string, data: any, isToken: boolean = true) {
   return request({ data, url, method: 'PUT', headers: { isToken }, })
 }
-export function deleteAction(data: any, url: string, isToken: boolean = true) {
+export function deleteAction(url: string, data: any, isToken: boolean = true) {
   return request({ data, url, method: 'DELETE', headers: { isToken }, })
 }
 
