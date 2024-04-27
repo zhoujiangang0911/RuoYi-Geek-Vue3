@@ -1,0 +1,10 @@
+{
+    "productName": "test",
+    "icon": "./icon/logo.png",
+    "files": ["./electron/background.js", "./dist"],
+    "extraFiles": ["./bin", "./.vscode", "./doc"],
+    "directories": {
+      "output": "./electron/dist"
+    }
+  }
+  

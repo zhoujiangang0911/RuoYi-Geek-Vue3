@@ -79,7 +79,7 @@ directive(app)
 app.use(ElementPlus, {
   locale: locale,
   // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
+  size: localStorage.getItem('size') || 'default'
 })
 
 import VForm3 from 'vform3-builds'  //引入VForm 3库
