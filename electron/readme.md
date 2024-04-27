@@ -1,4 +1,4 @@
-应该将下面内容追加到package.json中
+默认是没有使用electron的，如果要使用electron应该将下面内容追加到package.json中。
 
 ```json
 {
