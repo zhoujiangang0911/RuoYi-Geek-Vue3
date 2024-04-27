@@ -16,7 +16,7 @@ async function createWindow() {
         width: 800,
         height: 600,
         autoHideMenuBar: true,
-        icon: path.resolve('src/assets/logo/logo.png'),
+        icon: path.resolve(__dirname, '../dist/logo/logo.png'),
         webPreferences: {
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -48,7 +48,7 @@ async function createWindow() {
         // Load the index.html when not in development
         await win.loadFile(path.resolve(__dirname, '../dist/index.html'))
     }
-    
+
 }
 
 // Quit when all windows are closed.

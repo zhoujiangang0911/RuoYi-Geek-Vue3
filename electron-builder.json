@@ -1,6 +1,6 @@
 {
-    "productName": "test",
-    "icon": "./icon/logo.png",
+    "productName": "ruoyi",
+    "icon": "./public/logo/logo.png",
     "files": ["./electron/background.js", "./dist"],
     "extraFiles": ["./bin", "./.vscode", "./doc"],
     "directories": {
