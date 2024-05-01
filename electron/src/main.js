@@ -4,11 +4,11 @@ const { installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installe
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const Store = require('electron-store');
 const path = require('path');
-
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
+process.env.WEBPACK_DEV_SERVER_URL = true
 
 async function createWindow() {
     // Create the browser window.
@@ -16,7 +16,7 @@ async function createWindow() {
         width: 800,
         height: 600,
         autoHideMenuBar: true,
-        icon: path.resolve(__dirname, '../dist/logo/logo.png'),
+        icon: path.resolve(__dirname, './html/logo/logo.png'),
         webPreferences: {
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -40,17 +40,17 @@ async function createWindow() {
 
     });
     win.maximize()
+    console.log(process.env.WEBPACK_DEV_SERVER_URL);
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
-        await win.loadFile(path.resolve(__dirname, '../dist/index.html'))
+        await win.loadURL("http://127.0.0.1/")
     } else {
         //createProtocol('app')
         // Load the index.html when not in development
-        await win.loadFile(path.resolve(__dirname, '../dist/index.html'))
+        await win.loadFile(path.resolve(__dirname, './html/index.html'))
     }
 
 }
-
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
     // On macOS it is common for applications and their menu bar
