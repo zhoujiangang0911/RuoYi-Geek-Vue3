@@ -17,3 +17,4 @@ declare module "*.vue" {
 }
 
 declare module 'particles.vue3';
+declare module 'jsencrypt/bin/jsencrypt.min';
