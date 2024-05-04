@@ -122,10 +122,10 @@
           <el-input v-model="form.totalAmount" placeholder="请输入订单总金额" />
         </el-form-item>
         <el-form-item label="订单内容">
-          <editor v-model="form.orderContent" :min-height="192"/>
+          <el-input v-model="form.orderRemark" placeholder="请输入订单内容" />
         </el-form-item>
         <el-form-item label="订单备注" prop="orderRemark">
-          <el-input v-model="form.orderRemark" placeholder="请输入订单备注" />
+          <el-input type="textarea" v-model="form.orderRemark" placeholder="请输入订单备注" />
         </el-form-item>
         <el-form-item label="负载信息" prop="orderMessage">
           <el-input v-model="form.orderMessage" placeholder="请输入负载信息" />
