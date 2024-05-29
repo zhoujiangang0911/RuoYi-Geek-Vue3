@@ -71,6 +71,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/laboratory',
+    component: Layout,
+    redirect: '/laboratory/three',
+    children: [
+      {
+        path: 'three',
+        component: () => import('@/views/three/gltfmode'),
+        name: 'three',
+        meta: { title: 'three', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
