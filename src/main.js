@@ -44,6 +44,8 @@ import TreeSelect from '@/components/TreeSelect'
 import DictTag from '@/components/DictTag'
 // 富文本编辑器组件
 import Editor from "@/components/Editor";
+// Qrcode 二维码组件
+import QRCodeView from "@/components/QRCodeView";
 
 const app = createApp(App)
 
@@ -66,6 +68,7 @@ app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('Editor', Editor)
+app.component('QRCodeView', QRCodeView)
 
 app.use(router)
 app.use(store)

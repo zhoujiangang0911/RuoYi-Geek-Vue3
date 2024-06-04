@@ -99,7 +99,6 @@
 
     <el-table v-loading="loading" :data="invoiceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="发票id" align="center" prop="invoiceId" />
       <el-table-column label="订单号" align="center" prop="orderNumber" />
       <el-table-column label="发票类型" align="center" prop="invoiceType" />
       <el-table-column label="发票抬头" align="center" prop="invoiceHeader" />
