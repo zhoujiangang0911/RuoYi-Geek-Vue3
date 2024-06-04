@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import * as THREE from 'three'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-export function loadModel(url: string) {
+export function loadModel(url: string):Promise<any> {
     return new Promise((resolve, reject,) => {
         const loader = new GLTFLoader()
         const dracoLoader = new DRACOLoader();
