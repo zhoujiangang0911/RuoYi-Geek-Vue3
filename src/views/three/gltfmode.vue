@@ -19,12 +19,7 @@
 
 <script setup name="Index" lang="ts">
 import * as THREE from 'three'
-
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
-
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { loadModel, creatScene } from './ThreeHelper'
 import { onMounted, ref } from 'vue';
 const canvas = ref()

@@ -10,7 +10,7 @@ export function loadModel(url: string):Promise<any> {
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('three/examples/jsm/libs/draco/');
         loader.setDRACOLoader(dracoLoader);
-        loader.load('/zombies3d.glb', resolve)
+        loader.load(url, resolve)
     })
 }
 
