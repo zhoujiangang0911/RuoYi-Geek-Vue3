@@ -4,9 +4,9 @@
          <el-col :span="6" :xs="24">
             <el-card class="box-card">
                <template v-slot:header>
-                 <div class="clearfix">
-                   <span>个人信息</span>
-                 </div>
+                  <div class="clearfix">
+                     <span>个人信息</span>
+                  </div>
                </template>
                <div>
                   <div class="text-center">
@@ -27,7 +27,8 @@
                      </li>
                      <li class="list-group-item">
                         <svg-icon icon-class="tree" />所属部门
-                        <div class="pull-right" v-if="state.user.dept">{{ state.user.dept.deptName }} / {{ state.postGroup }}</div>
+                        <div class="pull-right" v-if="state.user.dept">{{ state.user.dept.deptName }} / {{
+                           state.postGroup }}</div>
                      </li>
                      <li class="list-group-item">
                         <svg-icon icon-class="peoples" />所属角色
@@ -44,9 +45,9 @@
          <el-col :span="18" :xs="24">
             <el-card>
                <template v-slot:header>
-                 <div class="clearfix">
-                   <span>基本资料</span>
-                 </div>
+                  <div class="clearfix">
+                     <span>基本资料</span>
+                  </div>
                </template>
                <el-tabs v-model="activeTab">
                   <el-tab-pane label="基本资料" name="userinfo">
@@ -54,6 +55,12 @@
                   </el-tab-pane>
                   <el-tab-pane label="修改密码" name="resetPwd">
                      <resetPwd />
+                  </el-tab-pane>
+                  <el-tab-pane label="修改邮箱" name="resetEmail">
+                     <resetEmail />
+                  </el-tab-pane>
+                  <el-tab-pane label="修改手机号" name="resetPhone">
+                     <resetPhone />
                   </el-tab-pane>
                </el-tabs>
             </el-card>
@@ -66,21 +73,23 @@
 import userAvatar from "./userAvatar";
 import userInfo from "./userInfo";
 import resetPwd from "./resetPwd";
+import resetEmail from "./resetEmail"
+import resetPhone from "./resetPhone"
 import { getUserProfile } from "@/api/system/user";
 
 const activeTab = ref("userinfo");
 const state = reactive({
-  user: {},
-  roleGroup: {},
-  postGroup: {}
+   user: {},
+   roleGroup: {},
+   postGroup: {}
 });
 
 function getUser() {
-  getUserProfile().then(response => {
-    state.user = response.data;
-    state.roleGroup = response.roleGroup;
-    state.postGroup = response.postGroup;
-  });
+   getUserProfile().then(response => {
+      state.user = response.data;
+      state.roleGroup = response.roleGroup;
+      state.postGroup = response.postGroup;
+   });
 };
 
 getUser();
