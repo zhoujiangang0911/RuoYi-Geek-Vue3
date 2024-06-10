@@ -1,45 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="用户id" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户id"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="订单号" prop="orderNumber">
-        <el-input
-          v-model="queryParams.orderNumber"
-          placeholder="请输入订单号"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="订单总金额" prop="totalAmount">
-        <el-input
-          v-model="queryParams.totalAmount"
-          placeholder="请输入订单总金额"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="订单备注" prop="orderRemark">
-        <el-input
-          v-model="queryParams.orderRemark"
-          placeholder="请输入订单备注"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="负载信息" prop="orderMessage">
-        <el-input
-          v-model="queryParams.orderMessage"
-          placeholder="请输入负载信息"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.orderNumber" placeholder="请输入订单号" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -49,86 +12,74 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['pay:order:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['pay:order:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['pay:order:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['pay:order:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['pay:order:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['pay:order:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['pay:order:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="Download" @click="handleExport"
+          v-hasPermi="['pay:order:export']">导出</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单ID" align="center" prop="orderId" />
-      <el-table-column label="用户id" align="center" prop="userId" />
       <el-table-column label="订单号" align="center" prop="orderNumber" />
       <el-table-column label="订单状态" align="center" prop="orderStatus" />
       <el-table-column label="订单总金额" align="center" prop="totalAmount" />
-      <el-table-column label="订单内容" align="center" prop="orderContent" />
-      <el-table-column label="订单备注" align="center" prop="orderRemark" />
-      <el-table-column label="负载信息" align="center" prop="orderMessage" />
+      <el-table-column label="实际金额" align="center" prop="actualAmount" />
+      <el-table-column label="创建者" align="center" prop="createBy" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['pay:order:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['pay:order:remove']">删除</el-button>
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['pay:order:edit']">修改</el-button>
+          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['pay:order:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改订单对话框 -->
-    <el-dialog :title="title" v-model="open" width="700px" append-to-body>
-      <el-form ref="orderRef" :model="form" :rules="rules" label-width="100px">
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-form ref="orderRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="订单号" prop="orderNumber">
+          <el-input v-model="form.orderNumber" placeholder="请输入订单号" />
+        </el-form-item>
         <el-form-item label="订单总金额" prop="totalAmount">
           <el-input v-model="form.totalAmount" placeholder="请输入订单总金额" />
         </el-form-item>
-        <el-form-item label="订单内容">
-          <el-input v-model="form.orderRemark" placeholder="请输入订单内容" />
+        <el-form-item label="实际金额" prop="actualAmount">
+          <el-input v-model="form.actualAmount" placeholder="请输入实际金额" />
         </el-form-item>
-        <el-form-item label="订单备注" prop="orderRemark">
-          <el-input type="textarea" v-model="form.orderRemark" placeholder="请输入订单备注" />
+        <el-form-item label="订单内容" prop="orderContent">
+          <el-input v-model="form.orderContent" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="负载信息" prop="orderMessage">
           <el-input v-model="form.orderMessage" placeholder="请输入负载信息" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -161,13 +112,12 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    userId: null,
     orderNumber: null,
     orderStatus: null,
     totalAmount: null,
+    actualAmount: null,
     orderContent: null,
-    orderRemark: null,
-    orderMessage: null
+    orderMessage: null,
   },
   rules: {
   }
@@ -195,13 +145,17 @@ function cancel() {
 function reset() {
   form.value = {
     orderId: null,
-    userId: null,
     orderNumber: null,
     orderStatus: null,
     totalAmount: null,
+    actualAmount: null,
     orderContent: null,
-    orderRemark: null,
-    orderMessage: null
+    orderMessage: null,
+    createBy: null,
+    createTime: null,
+    updateBy: null,
+    updateTime: null,
+    remark: null
   };
   proxy.resetForm("orderRef");
 }
@@ -267,12 +221,12 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _orderIds = row.orderId || ids.value;
-  proxy.$modal.confirm('是否确认删除订单编号为"' + _orderIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm('是否确认删除订单编号为"' + _orderIds + '"的数据项？').then(function () {
     return delOrder(_orderIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+  }).catch(() => { });
 }
 
 

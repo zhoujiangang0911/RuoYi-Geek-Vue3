@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="订单号" prop="orderNumber">
         <el-input
           v-model="queryParams.orderNumber"
@@ -99,6 +99,7 @@
 
     <el-table v-loading="loading" :data="invoiceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="发票id" align="center" prop="invoiceId" />
       <el-table-column label="订单号" align="center" prop="orderNumber" />
       <el-table-column label="发票类型" align="center" prop="invoiceType" />
       <el-table-column label="发票抬头" align="center" prop="invoiceHeader" />
@@ -106,6 +107,19 @@
       <el-table-column label="收票人手机号" align="center" prop="invoicePhone" />
       <el-table-column label="收票人邮箱" align="center" prop="invoiceEmail" />
       <el-table-column label="发票备注" align="center" prop="invoiceRemark" />
+      <el-table-column label="创建者" align="center" prop="createBy" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="更新者" align="center" prop="updateBy" />
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['pay:invoice:edit']">修改</el-button>
@@ -154,6 +168,9 @@
         <el-form-item label="发票备注" prop="invoiceRemark">
           <el-input v-model="form.invoiceRemark" placeholder="请输入发票备注" />
         </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -191,7 +208,7 @@ const data = reactive({
     invoiceNumber: null,
     invoicePhone: null,
     invoiceEmail: null,
-    invoiceRemark: null
+    invoiceRemark: null,
   },
   rules: {
   }
@@ -225,7 +242,12 @@ function reset() {
     invoiceNumber: null,
     invoicePhone: null,
     invoiceEmail: null,
-    invoiceRemark: null
+    invoiceRemark: null,
+    createBy: null,
+    createTime: null,
+    updateBy: null,
+    updateTime: null,
+    remark: null
   };
   proxy.resetForm("invoiceRef");
 }
