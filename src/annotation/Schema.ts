@@ -5,7 +5,7 @@ export default function Schema(options: SchemaTyle): (target: any, attr: any) =>
 export default function Schema(value: SchemaTyle | string) {
     return function (target: any, attr: any) {
         if (target.schema == undefined) target.schema = {}
-        if (typeof value === 'string') target.schema[attr] = { name: value, components: {} };
+        if (typeof value === 'string') target.schema[attr] = { name: value, components: {}, attr };
         else {
             target.schema[attr] = value;
         }
@@ -13,6 +13,7 @@ export default function Schema(value: SchemaTyle | string) {
 }
 export interface SchemaTyle {
     name: string,
+    attr:string,
     components: { [key: string]: (...args: any[]) => Component }
 }
 export function getSchema(target: any, prop: string): SchemaTyle {
