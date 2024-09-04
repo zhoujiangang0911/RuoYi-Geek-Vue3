@@ -8,7 +8,6 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { ColorRepresentation } from 'three';
-import { Q } from 'dist/assets/index-Dd2IWPEj';
 /**
  * gltf/glb  fbx  obj+mtl(材质) 
  * @param model 
@@ -125,7 +124,6 @@ export class Director {
             timeS = timeS + T;
             // requestAnimationFrame默认调用render函数60次，通过时间判断，降低renderer.render执行频率
             if (timeS > renderT) {
-                console.log(`调用.render时间间隔`, timeS * 1000 + '毫秒');
                 this.controls.update();
                 this.composer.render();
                 this.FPS = 1 / timeS

@@ -7,15 +7,17 @@
         <div class="editor" ref="editor" :style="styles"></div>
     </div>
 </template>
-  
+
 <script setup>
 import Quill from "quill";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+import QuillBetterTable from 'quill-better-table'
+import 'quill-better-table/dist/quill-better-table.css'
 import { getToken } from "@/utils/auth";
 import { ElMessage } from 'element-plus'
-
+Quill.register({ 'modules/better-table': QuillBetterTable }, true)
 const props = defineProps({
     /* 编辑器的内容 */
     modelValue: {
@@ -61,18 +63,46 @@ const options = {
     debug: "warn",
     modules: {
         // 工具栏配置
-        toolbar: [
-            ["bold", "italic", "underline", "strike"],       // 加粗 斜体 下划线 删除线
-            ["blockquote", "code-block"],                    // 引用  代码块
-            [{ list: "ordered" }, { list: "bullet" }],       // 有序、无序列表
-            [{ indent: "-1" }, { indent: "+1" }],            // 缩进
-            [{ size: ["small", false, "large", "huge"] }],   // 字体大小
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],         // 标题
-            [{ color: [] }, { background: [] }],             // 字体颜色、字体背景颜色
-            [{ align: [] }],                                 // 对齐方式
-            ["clean"],                                       // 清除文本格式
-            ["link", "image", "video"]                       // 链接、图片、视频
-        ],
+        toolbar: {
+            container: [
+                ["bold", "italic", "underline", "strike"],       // 加粗 斜体 下划线 删除线
+                ["blockquote", "code-block"],                    // 引用  代码块
+                [{ list: "ordered" }, { list: "bullet" }],       // 有序、无序列表
+                [{ indent: "-1" }, { indent: "+1" }],            // 缩进
+                [{ size: ["small", false, "large", "huge"] }],   // 字体大小
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],         // 标题
+                [{ color: [] }, { background: [] }],             // 字体颜色、字体背景颜色
+                [{ align: [] }],                                 // 对齐方式
+                ["clean"],                                       // 清除文本格式
+                ["link", "image", "video"],                       // 链接、图片、视频
+                [{ 'table': 'TD' }],                             // 表格
+            ],
+            handlers: {
+                'table': function () {
+                    DataQuill.getModule('better-table').insertTable(3, 3)
+                },
+            },
+        },
+        table: false,
+        'better-table': {
+            operationMenu: {
+                items: {
+                    unmergeCells: {
+                        text: 'Another unmerge cells name'
+                    }
+                },
+                background: {
+                    color: '#333'
+                },
+                color: {
+                    colors: ['green', 'red', 'yellow', 'blue', 'white'],
+                    text: 'background:'
+                }
+            }
+        },
+        keyboard: {
+            bindings: QuillBetterTable.keyboardBindings
+        }
     },
     placeholder: "请输入内容",
     readOnly: props.readOnly,
@@ -94,7 +124,7 @@ watch(() => props.modelValue, val => {
     if (val !== currentValue) {
         currentValue = val === null ? "" : val;
         if (DataQuill) {
-            DataQuill.pasteHTML(currentValue);
+            DataQuill.setContents(currentValue);
         }
     }
 }, { immediate: true })
@@ -119,7 +149,9 @@ function init() {
             }
         });
     }
-    DataQuill.pasteHTML(currentValue);
+    console.log(DataQuill);
+
+    DataQuill.setContents(currentValue);
     DataQuill.on("text-change", (delta, oldDelta, source) => {
         const html = editor.value.children[0].innerHTML;
         const text = DataQuill.getText();
@@ -177,8 +209,8 @@ function handleUploadError() {
 }
 
 </script>
-  
-<style>
+
+<style scoped>
 .editor,
 .ql-toolbar {
     white-space: pre-wrap !important;
@@ -273,4 +305,3 @@ function handleUploadError() {
     content: "等宽字体";
 }
 </style>
-  

@@ -80,7 +80,7 @@ const handleNodeClick = (obj: THREE.Object3D) => {
 const LoadModelLoading = ref(false)
 function handelLoadModel() {
     LoadModelLoading.value = true
-    loadModel({ gltf: '/NewProject.glb' }, "glb").then(m => {
+    loadModel({ gltf: '/zombies3d.glb' }, "glb").then(m => {
         globModel = m;
         modelthree.value.push(globModel)
         reload.value++
