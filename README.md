@@ -1,4 +1,3 @@
-
 <p align="center">
     <span>
         <img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
@@ -13,7 +12,6 @@
 <p align="center">
 	<img src="https://img.shields.io/github/license/mashape/apistatus.svg">
 </p>
-
 
 # 当前版本是3.8.7.3
 
@@ -43,6 +41,10 @@ yarn dev
 # 构建生产环境 yarn build:prod
 # 前端访问地址 http://localhost:80
 ```
+
+## Electron
+
+请注意：electron不可以使用pnpm进行install
 
 ## 内置功能
 
