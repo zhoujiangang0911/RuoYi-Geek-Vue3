@@ -16,6 +16,20 @@
                 "<node_internals>/**"
             ],
             "type": "node"
+        },
+        {
+            "name": "Electron-DEV",
+            "request": "launch",
+            "cwd": "${workspaceFolder}\\electron",
+            "runtimeArgs": [
+                "run",
+                "electron"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
     ]
 }
