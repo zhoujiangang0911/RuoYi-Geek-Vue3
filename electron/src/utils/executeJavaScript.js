@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { net } = require('electron')
 exports.getJavaScript = (data) => {
     return new Promise((resolve, reject) => {
         if (data.startsWith('file:///')) {
