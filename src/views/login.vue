@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">数智宝</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
@@ -34,17 +34,18 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-login-footer">
-      <span>Copyright © 2018-2024 ruoyi.vip All Rights Reserved.</span>
-    </div>
+    <!-- <div class="el-login-footer">
+      <span>Copyright © 2018-2024 数智宝 All Rights Reserved.</span>
+    </div> -->
   </div>
 </template>
 
 <script setup>
 import { getCodeImg } from "@/api/login";
-import Cookies from "js-cookie";
+import { getConfigKey } from '@/api/system/config'
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from '@/store/modules/user'
+import { computed } from "vue";
 
 const userStore = useUserStore()
 const router = useRouter();
@@ -67,11 +68,12 @@ const loginRules = {
 const codeUrl = ref("");
 const loading = ref(false);
 // 验证码开关
-const captchaEnabled = ref(true);
+const captchaEnabled = ref(false);
 // 注册开关
 const register = ref(false);
 const redirect = ref(undefined);
-
+getConfigKey("sys.account.captchaEnabled").then(res => captchaEnabled.value = res.msg === 'true')
+getConfigKey("sys.account.registerUser").then(res => register.value = res.msg === 'true')
 function handleLogin() {
   proxy.$refs.loginRef.validate(valid => {
     if (valid) {
