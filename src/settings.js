@@ -1,18 +1,18 @@
 import { getConfigKey } from '@/api/system/config'
 
-export default {
+const setting = {
   /**
    * 网页标题
    */
   title: import.meta.env.VITE_APP_TITLE,
   /**
-   * 主题颜色
+   * 主题色
    */
-  theme: await getConfigKey("sys.index.theme").then(res => res.msg),
+  theme: '#409EFF',
   /**
    * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
    */
-  sideTheme: await getConfigKey("sys.index.sideTheme").then(res => res.msg),
+  sideTheme: 'theme-dark',
   /**
    * 是否系统布局配置
    */
@@ -21,27 +21,27 @@ export default {
   /**
    * 是否显示顶部导航
    */
-  topNav: await getConfigKey("sys.index.topNav").then(res => res.msg === 'true'),
+  topNav: false,
 
   /**
    * 是否显示 tagsView
    */
-  tagsView: await getConfigKey("sys.index.tagsView").then(res => res.msg === 'true'),
+  tagsView: true,
 
   /**
    * 是否固定头部
    */
-  fixedHeader: await getConfigKey("sys.index.fixedHeader").then(res => res.msg === 'true'),
+  fixedHeader: false,
 
   /**
    * 是否显示logo
    */
-  sidebarLogo: await getConfigKey("sys.index.sidebarLogo").then(res => res.msg === 'true'),
+  sidebarLogo: true,
 
-  /**	
+  /**
    * 是否显示动态标题
    */
-  dynamicTitle: await getConfigKey("sys.index.dynamicTitle").then(res => res.msg === 'true'),
+  dynamicTitle: false,
 
   /**
    * @type {string | array} 'production' | ['production', 'development']
@@ -49,5 +49,25 @@ export default {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production'
+  errorLog: 'production',
+
+  /**
+   * 获取后端配置的设置
+   * @returns Promise<Object>
+   */
+  async initSetting() {
+    const config = (key) => getConfigKey(key).then(res => res.msg)
+    return {
+      theme: await config("sys.index.theme"),
+      sideTheme: await config("sys.index.sideTheme"),
+      topNav: await config("sys.index.topNav"),
+      tagsView: await config("sys.index.tagsView"),
+      fixedHeader: await config("sys.index.fixedHeader"),
+      sidebarLogo: await config("sys.index.sidebarLogo"),
+      dynamicTitle: await config("sys.index.dynamicTitle"),
+    }
+  }
 }
+
+
+export default setting
