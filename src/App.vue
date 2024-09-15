@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="!settingsStore.inited">
+  <div v-loading="!settingsStore.inited" style="height: 100%;width: 100%;">
     <router-view />
   </div>
 </template>
